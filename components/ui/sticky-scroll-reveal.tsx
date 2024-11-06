@@ -9,11 +9,7 @@ export const StickyScroll = ({
   content,
   contentClassName,
 }: {
-  content: {
-    title: string;
-    description: string;
-    content?: React.ReactNode | any;
-  }[];
+  content: any;
   contentClassName?: string;
 }) => {
   const [activeCard, setActiveCard] = React.useState(0);
