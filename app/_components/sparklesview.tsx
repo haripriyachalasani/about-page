@@ -1,14 +1,29 @@
-"use client";
-import React from "react";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { LayoutGridDemo } from "@/app/_components/layoutgrid";
-import { useTheme } from "next-themes";
+'use client'
+
+import React, { useEffect, useState } from "react"
+import { SparklesCore } from "@/components/ui/sparkles"
+import { LayoutGridDemo } from "@/app/_components/layoutgrid"
+import { useTheme } from "next-themes"
 
 export function SparklesPreview() {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    // Set a default theme if none is detected
+    if (!theme) {
+      setTheme('dark')
+    }
+  }, [theme, setTheme])
+
+  // Prevent rendering with incorrect theme
+  if (!mounted) return null
+
+  const isDarkTheme = theme === 'dark'
 
   return (
-    <div className={`h-[55rem] w-full ${theme === 'dark' ? 'bg-black' : 'bg-white'} flex flex-col items-center justify-center overflow-hidden rounded-md`}>
+    <div className={`h-[55rem] w-full ${isDarkTheme ? 'bg-black' : 'bg-white'} flex flex-col items-center justify-center overflow-hidden rounded-md`}>
       <h1 className="md:text-4xl text-4xl lg:text-6xl font-bold text-center relative z-20 py-8 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
         Where It All Began
       </h1>
@@ -25,15 +40,15 @@ export function SparklesPreview() {
           maxSize={1}
           particleDensity={1200}
           className="w-full h-full"
-          particleColor={theme === 'dark' ? "#FFFFFF" : "#000000"}
+          particleColor={isDarkTheme ? "#FFFFFF" : "#000000"}
         />
 
         {/* Radial Gradient to prevent sharp edges */}
-        <div className={`absolute inset-0 w-full h-full ${theme === 'dark' ? 'bg-black' : 'bg-white'} [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]`}></div>
+        <div className={`absolute inset-0 w-full h-full ${isDarkTheme ? 'bg-black' : 'bg-white'} [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]`}></div>
       </div>
       <div className="w-full flex-grow">
         <LayoutGridDemo />
       </div>
     </div>
-  );
+  )
 }
